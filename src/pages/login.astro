@@ -1,0 +1,234 @@
+---
+const err = Astro.url.searchParams.get("error");
+---
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login</title>
+    <style>
+      :root {
+        --bg1: #0f172a;
+        --bg2: #1e293b;
+        --card: #0b1020;
+        --muted: #94a3b8;
+        --text: #e2e8f0;
+        --accent: #6366f1;
+        --accent-2: #8b5cf6;
+        --danger: #ef4444;
+        --ring: rgba(99,102,241,.45);
+        --shadow: 0 20px 45px rgba(2, 6, 23, .55);
+      }
+
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+        color: var(--text);
+        background:
+          radial-gradient(1200px 600px at 10% -10%, rgba(99,102,241,.18), transparent 60%),
+          radial-gradient(900px 500px at 110% 10%, rgba(139,92,246,.18), transparent 60%),
+          linear-gradient(180deg, var(--bg1), var(--bg2));
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 420px;
+        background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.0));
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(148, 163, 184, .15);
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        padding: 24px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        background:
+          radial-gradient(600px 200px at 30% -10%, rgba(99,102,241,.18), transparent 60%),
+          radial-gradient(600px 200px at 120% 0%, rgba(139,92,246,.18), transparent 60%);
+        filter: blur(10px);
+        z-index: 0;
+      }
+
+      .card-inner { position: relative; z-index: 1; }
+
+      .title {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: .3px;
+        margin: 0 0 8px;
+      }
+
+      .subtitle {
+        color: var(--muted);
+        font-size: 14px;
+        margin: 0 0 20px;
+      }
+
+      .error {
+        display: none;
+        background: rgba(239, 68, 68, .12);
+        color: #fecaca;
+        border: 1px solid rgba(239,68,68,.25);
+        padding: 10px 12px;
+        border-radius: 10px;
+        font-size: 14px;
+        margin-bottom: 14px;
+      }
+      .error.show { display: block; }
+
+      .field { margin-bottom: 14px; }
+      .label {
+        display: block;
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      .input-wrap { position: relative; }
+      .input {
+        width: 100%;
+        height: 44px;
+        padding: 0 12px;
+        padding-right: 44px;
+        color: var(--text);
+        background: rgba(2,6,23,.35);
+        border: 1px solid rgba(148, 163, 184, .22);
+        border-radius: 10px;
+        outline: none;
+        transition: border-color .18s, box-shadow .18s, background .18s;
+      }
+      .input::placeholder { color: #9aa6b2; }
+      .input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 4px var(--ring);
+        background: rgba(2,6,23,.55);
+      }
+
+      .toggle {
+        position: absolute;
+        top: 50%;
+        right: 8px;
+        transform: translateY(-50%);
+        border: 0;
+        background: transparent;
+        color: var(--muted);
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      .toggle:hover { color: var(--text); background: rgba(148,163,184,.08); }
+
+      .btn {
+        width: 100%;
+        height: 44px;
+        border: 0;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        color: white;
+        background: linear-gradient(90deg, var(--accent), var(--accent-2));
+        box-shadow: 0 10px 22px rgba(99,102,241,.25);
+        transition: filter .18s, transform .06s;
+      }
+      .btn:hover { filter: brightness(1.05); }
+      .btn:active { transform: translateY(1px); }
+      .btn[disabled] { opacity: .6; cursor: not-allowed; }
+
+      /* Secondary button (Register) */
+      .btn-secondary {
+        width: 100%;
+        height: 44px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        color: var(--accent);
+        background: transparent;
+        border: 1px solid rgba(99,102,241,.5);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: border-color .18s, background .18s, color .18s, transform .06s;
+      }
+      .btn-secondary:hover { border-color: var(--accent); background: rgba(99,102,241,.08); }
+      .btn-secondary:active { transform: translateY(1px); }
+
+      .btn-row {
+        display: grid;
+        gap: 10px;
+        margin-top: 10px;
+      }
+      @media (min-width: 420px) {
+        .btn-row { grid-template-columns: 1fr 1fr; }
+      }
+
+      .helper {
+        margin-top: 14px;
+        font-size: 13px;
+        color: var(--muted);
+        text-align: center;
+      }
+      .spinner {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(255,255,255,.35);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin .8s linear infinite;
+        vertical-align: -3px;
+        margin-right: 8px;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <div class="card-inner">
+        <h1 class="title">Login</h1>
+        <p class="subtitle">Akses Cinema XII kamu dengan email dan kata sandi.</p>
+
+        <p id="err" class="error {err ? 'show' : ''}">
+          {err ? decodeURIComponent(err) : ''}
+        </p>
+
+        <form method="post" action="/api/auth/login" id="loginForm" novalidate>
+          <div class="field">
+            <label class="label" for="email">Email</label>
+            <input class="input" id="email" name="email" type="email" inputmode="email" autocomplete="email" required placeholder="nama@domain.com" />
+          </div>
+
+          <div class="field">
+            <label class="label" for="password">Password</label>
+            <div class="input-wrap">
+              <input class="input" id="password" name="password" type="password" autocomplete="current-password" required placeholder="••••••••" />
+              <button class="toggle" type="button" id="togglePw" aria-label="Tampilkan/sembunyikan password">👁️</button>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn" type="submit" id="submitBtn">Masuk</button>
+            <a class="btn-secondary" href="/register" aria-label="Buat akun baru">Daftar</a>
+          </div>
+
+          <p class="helper" id="helper">Belum punya akun? Klik “Daftar” untuk membuat akun baru.</p>
+        </form>
+      </div>
+    </main>
+
+
+  </body>
+</html>
