@@ -81,7 +81,7 @@ function Greeting() {
         <div className="min-w-0">
           <h3 className="font-semibold text-sky-900">Cashier</h3>
           <p className="text-xs text-sky-800/70 truncate">
-            Pura pura menjadi kasir
+            buat offline order & validasi
           </p>
         </div>
         <span

@@ -3,9 +3,9 @@ import { useMemo } from "react";
 
 type Props = {
   cinemaName?: string | null;
-  showtimeLabel?: string | null;     // mis. "Rabu, 12 Nov 19:30 • Studio 2"
-  seats: string[];                   // contoh: ["A1","A2","A10"]
-  pricePerSeat?: number;             // default 50000
+  showtimeLabel?: string | null;     
+  seats: string[];                   
+  pricePerSeat?: number;             
   onOrder?: () => void;
 };
 

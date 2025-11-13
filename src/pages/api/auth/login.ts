@@ -56,15 +56,8 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
             return redirect(`/login?error=${errorMsg}`, 303);
         }
 
-        // Parse response sukses
         const data = await res.json();
         const token = data.token || data.data?.token || data.accessToken;
-
-        if (!token) {
-            console.error("❌ Token tidak ada di response:", data);
-            return redirect("/login?error=Token%20tidak%20ditemukan", 303);
-        }
-        
         cookies.set("auth_token", token, {
             path: "/",
             httpOnly: false,    

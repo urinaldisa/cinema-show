@@ -10,21 +10,21 @@ export interface OrderItem {
   user_name: string;
   user_email: string;
   studio_id: number;
-  seat_ids: string[];          // ID kursi (array)
-  qr_code?: string;            // data:image/png;base64,...
+  seat_ids: string[];         
+  qr_code?: string;          
   booking_type: "online" | "offline" | (string & {});
   status: OrderStatus;
-  created_at: string;          // ISO
-  updated_at: string;          // ISO
+  created_at: string;       
+  updated_at: string;          
 }
 const API_URL = import.meta.env.PUBLIC_API_URL;
 
 export const useGetOrderList = (showtimeId?: string) =>
   useQuery<OrderItem[]>({
-    enabled: showtimeId ? true : true,        // biar gak ke-disable kalau parameter gak dipakai
+    enabled: showtimeId ? true : true,        
     queryKey: ["myOrder", showtimeId ?? null],
     queryFn: async () => {
-      const token = Cookies.get("auth_token"); // non-HttpOnly
+      const token = Cookies.get("auth_token"); 
       const r = await fetch(`${API_URL}/booking/my-bookings`, {
         headers: {
           "content-type": "application/json",

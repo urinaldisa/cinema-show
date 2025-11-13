@@ -1,8 +1,8 @@
 // src/sections/orders/OrdersRoot.tsx
 "use client";
 
+import OrdersPage from "../components/OrdersPage";
 import QueryProvider from "../helper/QueryProvider";
-import OrdersPage from "./OrdersPage";
 import { Toaster } from "sonner";
 
 export default function OrdersRoot() {

@@ -1,10 +1,8 @@
-// // src/middleware.ts
 // import type { MiddlewareHandler } from "astro";
 
 // export const onRequest: MiddlewareHandler = async (ctx, next) => {
 //     const { pathname } = new URL(ctx.request.url);
 
-//     // Allowlist: jangan diblok
 //     if (
 //         pathname === "/login" ||
 //         pathname.startsWith("/api/") ||

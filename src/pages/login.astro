@@ -1,5 +1,10 @@
 ---
+export const prerender = false;
 const err = Astro.url.searchParams.get("error");
+const token = Astro.cookies.get("auth_token")?.value ?? null;
+if (token) {
+  return Astro.redirect("/");
+}
 ---
 <!doctype html>
 <html lang="id">

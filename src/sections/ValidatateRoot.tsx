@@ -2,12 +2,12 @@
 
 import { Toaster } from "sonner";
 import QueryProvider from "../helper/QueryProvider";
-import CashierPage from "../components/CashierPage";
+import BarcodeValidator from "../components/BarcodeValidator";
 
-export default function CashierRoot() {
+export default function ValidationRoot() {
   return (
     <QueryProvider>
-      <CashierPage />
+      <BarcodeValidator />
       <Toaster richColors position="top-right" closeButton />
     </QueryProvider>
   );
